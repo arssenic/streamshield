@@ -9,7 +9,7 @@
 		<relativePath/> 
 	</parent>
 	<groupId>com.pipeline</groupId>
-	<artifactId>producer-service</artifactId>
+	<artifactId>fraud-engine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>
@@ -31,6 +31,10 @@
 	</properties>
 	<dependencies>
 		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 			<version>3.2.2</version>
@@ -38,11 +42,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
 		<dependency>
