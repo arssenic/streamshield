@@ -23,11 +23,13 @@ services:
 
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
 
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
 
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
+
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
@@ -42,3 +44,30 @@ services:
 
     ports:
       - "5432:5432"
+  
+  producer-service:
+    build: ./producer-service
+
+    ports:
+    - "8081:8081"
+
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+    depends_on:
+    - kafka
+
+
+  fraud-engine:
+    build: ./fraud-engine
+
+    ports:
+    - "8082:8082"
+
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/frauddb
+
+    depends_on:
+    - kafka
+    - postgres
