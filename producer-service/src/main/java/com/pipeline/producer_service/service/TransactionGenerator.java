@@ -19,7 +19,7 @@ public class TransactionGenerator {
 
     Random random = new Random();
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 500)
 
     public void generate(){
 
@@ -28,7 +28,7 @@ public class TransactionGenerator {
 
                         UUID.randomUUID().toString(),
 
-                        "user" + random.nextInt(10),
+                        "user" + random.nextInt(3),
 
                         random.nextDouble() * 100000,
 

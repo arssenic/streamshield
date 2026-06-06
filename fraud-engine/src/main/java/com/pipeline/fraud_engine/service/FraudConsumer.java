@@ -6,18 +6,31 @@ import org.springframework.kafka.annotation.KafkaListener;
 
 import org.springframework.stereotype.Component;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Component
 public class FraudConsumer {
 
+    @Autowired
+    FraudDetectionService fraudService;
+
     @KafkaListener(
-            topics = "transactions",
-            groupId = "fraud-group"
+            topics="transactions"
     )
 
     public void consume(Transaction tx){
 
+        String result =
+                fraudService.detect(tx);
+
         System.out.println(
-                "RECEIVED -> " + tx
+
+                "USER: "
+                + tx.getUserId()
+
+                + " STATUS: "
+
+                + result
         );
     }
 }
