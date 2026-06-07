@@ -19,7 +19,7 @@ public class TransactionGenerator {
 
     Random random = new Random();
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 3000)
 
     public void generate(){
 

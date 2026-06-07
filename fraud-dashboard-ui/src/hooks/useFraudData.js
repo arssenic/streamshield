@@ -14,21 +14,30 @@ export const useFraudData = (pollingInterval = 3000) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch all required data concurrently
                 const [count, highRisk, allTx] = await Promise.all([
                     fraudApi.getTotalCount(),
                     fraudApi.getHighRisk(),
                     fraudApi.getAllTransactions()
                 ]);
 
-                // Sort transactions to get the most recent first based on timestamp
                 const sortedTx = [...allTx].sort((a, b) => b.timestamp - a.timestamp);
+
+                const userFraudCounts = highRisk.reduce((acc, tx) => {
+                    acc[tx.userId] = (acc[tx.userId] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const topUsersArray = Object.entries(userFraudCounts)
+                    .map(([userId, count]) => ({ userId, count }))
+                    .sort((a, b) => b.count - a.count)
+                    .slice(0, 5); 
 
                 setData({
                     totalCount: count,
                     highRiskCount: highRisk.length,
-                    recentTransactions: sortedTx.slice(0, 10), // Top 10 recent
-                    allTransactions: sortedTx // Keep all for charts
+                    recentTransactions: sortedTx.slice(0, 10),
+                    allTransactions: sortedTx,
+                    topUsers: topUsersArray // Add to state
                 });
                 
                 setError(null);
@@ -40,13 +49,10 @@ export const useFraudData = (pollingInterval = 3000) => {
             }
         };
 
-        // Initial fetch
         fetchData();
 
-        // Setup polling interval
         const intervalId = setInterval(fetchData, pollingInterval);
 
-        // Cleanup interval on unmount
         return () => clearInterval(intervalId);
     }, [pollingInterval]);
 
