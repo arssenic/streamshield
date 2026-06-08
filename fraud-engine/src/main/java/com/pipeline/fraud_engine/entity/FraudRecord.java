@@ -16,6 +16,10 @@ public class FraudRecord {
 
     private Double amount;
 
+    private String city;
+    
+    private Integer age;
+
     private String status;
 
     private Long timestamp;
@@ -27,6 +31,8 @@ public class FraudRecord {
             String transactionId,
             String userId,
             Double amount,
+            String city,
+            Integer age,
             String status,
             Long timestamp
     ) {
@@ -34,6 +40,8 @@ public class FraudRecord {
         this.transactionId = transactionId;
         this.userId = userId;
         this.amount = amount;
+        this.city = city;
+        this.age = age;
         this.status = status;
         this.timestamp = timestamp;
     }
@@ -60,6 +68,22 @@ public class FraudRecord {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getStatus() {

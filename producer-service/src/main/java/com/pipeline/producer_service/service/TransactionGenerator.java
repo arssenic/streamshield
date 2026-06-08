@@ -19,20 +19,27 @@ public class TransactionGenerator {
 
     Random random = new Random();
 
+    String[] cities = {"Delhi", "Mumbai", "Bangalore", "Patna", "Gaya", "Hyderabad", "Chennai"};
+
     @Scheduled(fixedRate = 3000)
 
     public void generate(){
+
+        String randomCity = cities[random.nextInt(cities.length)];
+        int randomAge = 18 + random.nextInt(58);
 
         Transaction tx =
                 new Transaction(
 
                         UUID.randomUUID().toString(),
 
-                        "user" + random.nextInt(3),
+                        "user" + random.nextInt(5),
 
                         random.nextDouble() * 100000,
 
-                        "Delhi",
+                        randomCity,
+                        
+                        randomAge,
 
                         System.currentTimeMillis()
 

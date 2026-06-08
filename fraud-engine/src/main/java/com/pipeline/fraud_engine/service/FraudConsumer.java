@@ -37,6 +37,10 @@ public class FraudConsumer {
 
                         tx.getAmount(),
 
+                        tx.getCity(),   
+                        
+                        tx.getAge(),
+
                         result,
 
                         tx.getTimestamp()

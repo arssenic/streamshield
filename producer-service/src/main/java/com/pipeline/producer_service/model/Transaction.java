@@ -14,7 +14,9 @@ public class Transaction {
 
     private Double amount;
 
-    private String location;
+    private String city;
+
+    private Integer age;
 
     private Long timestamp;
 }

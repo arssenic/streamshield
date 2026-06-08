@@ -1,18 +1,18 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { MainLayout } from '../components/layout/MainLayout';
 import { StatCard } from '../components/dashboard/StatCard';
 import { RecentTxTable } from '../components/dashboard/RecentTxTable';
 import { TopUsersList } from '../components/dashboard/TopUsersList';
-import { LiveStreamLog } from '../components/dashboard/LiveStreamLog'; 
+import { LiveStreamLog } from '../components/dashboard/LiveStreamLog';
 import { FraudPieChart } from '../components/charts/FraudPieChart';
 import { TransactionTrendChart } from '../components/charts/TransactionTrendChart';
+import { DemographicsChart } from '../components/charts/DemographicsChart';
 import { useFraudData } from '../hooks/useFraudData';
 import { Activity, ShieldAlert, CreditCard, Users } from 'lucide-react';
 
 export const DashboardPage = () => {
     const { data, loading, error } = useFraudData(3000);
     
-    // NEW: State to track which tab is active
     const [activeTab, setActiveTab] = useState('dashboard');
 
     const safeCount = data.totalCount - data.highRiskCount;
@@ -20,7 +20,6 @@ export const DashboardPage = () => {
         ? ((data.highRiskCount / data.totalCount) * 100).toFixed(1) 
         : 0;
 
-    // We split out the dashboard content so the return statement is cleaner
     const renderDashboardContent = () => (
         <div className="space-y-6">
             {/* Top Stats Grid */}
@@ -39,6 +38,11 @@ export const DashboardPage = () => {
                 <div className="lg:col-span-1">
                     <FraudPieChart safeCount={safeCount} highRiskCount={data.highRiskCount} />
                 </div>
+            </div>
+
+            {/* Row 1.5: Demographics Grid (City + Age) */}
+            <div className="mt-6">
+                <DemographicsChart cityData={data.cityStats} ageData={data.ageStats} />
             </div>
 
             {/* Row 2: Top Users & Table */}
@@ -62,13 +66,13 @@ export const DashboardPage = () => {
                 </div>
             )}
 
+            {/* Loading Overlay (only shows on initial load) */}
             {loading && data.totalCount === 0 ? (
                 <div className="flex flex-col items-center justify-center h-64 text-slate-400">
                     <Activity className="w-8 h-8 animate-spin mb-4 text-brand-primary" />
                     <p>Connecting to Fraud Engine...</p>
                 </div>
             ) : (
-                // Conditionally render based on the active tab
                 activeTab === 'dashboard' ? (
                     renderDashboardContent()
                 ) : (

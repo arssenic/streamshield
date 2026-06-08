@@ -8,7 +8,7 @@ export const MainLayout = ({ children, activeTab, onTabChange }) => {
             <aside className="w-64 bg-dark-800 border-r border-dark-700 flex flex-col">
                 <div className="p-6 flex items-center gap-3 border-b border-dark-700">
                     <ShieldAlert className="text-brand-danger w-8 h-8" />
-                    <h1 className="text-xl font-bold tracking-wider text-white">FraudGuard</h1>
+                    <h1 className="text-xl font-bold tracking-wider text-white">StreamShield</h1>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
                     <button 
