@@ -17,11 +17,13 @@ export const useFraudData = (pollingInterval = 3000) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [count, highRisk, allTx] = await Promise.all([
+                const [count, backendHighRisk, allTx] = await Promise.all([
                     fraudApi.getTotalCount(),
                     fraudApi.getHighRisk(),
                     fraudApi.getAllTransactions()
                 ]);
+
+                const highRisk = allTx.filter(tx => tx.status !== 'SAFE');  
 
                 const sortedTx = [...allTx].sort((a, b) => b.timestamp - a.timestamp);
 
