@@ -2,9 +2,8 @@ import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export const TransactionTrendChart = ({ transactions }) => {
-    // Reverse the transactions so the chart flows from left (oldest) to right (newest)
     const chartData = [...transactions].reverse().map(tx => ({
-        time: new Date(tx.timestamp).toLocaleTimeString([], { hour12: false, minute: '2-digit', second: '2-digit' }),
+        time: new Date(tx.timestamp).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         amount: Math.round(tx.amount),
         status: tx.status
     }));

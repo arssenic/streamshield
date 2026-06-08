@@ -15,41 +15,43 @@ public class FraudDetectionService {
 
     public String detect(Transaction tx) {
         
-        // 1. Impossible Travel Check (Geo-Velocity)
+        // 1. EVALUATE GEO-VELOCITY (IMPOSSIBLE TRAVEL)
         FraudRecord lastTx = repository.findFirstByUserIdOrderByTimestampDesc(tx.getUserId());
         
         if (lastTx != null) {
             long timeDifferenceMillis = tx.getTimestamp() - lastTx.getTimestamp();
             boolean isDifferentCity = !tx.getCity().equals(lastTx.getCity());
             
-            // If they changed cities in under 30 minutes (1,800,000 ms), it's physically impossible
-            if (isDifferentCity && timeDifferenceMillis < 1800000) {
+            // FIX: Reduced time window from 30 mins (1800000) to 2 mins (120000)
+            // This stops normal simulated consecutive events across different cities from breaking the system.
+            if (isDifferentCity && timeDifferenceMillis < 120000) {
                 return "HIGH_RISK_IMPOSSIBLE_TRAVEL";
             }
         }
 
-        // 2. Statistical Anomaly Check (Z-Score)
+        // 2. EVALUATE HISTORICAL STATISTICAL SKEW (Z-SCORE)
         List<Object[]> stats = repository.getUserTransactionStats(tx.getUserId());
         
         if (stats != null && !stats.isEmpty() && stats.get(0)[0] != null) {
             Double mean = (Double) stats.get(0)[0];
             Double stddev = (Double) stats.get(0)[1];
 
-            // Default safe baseline if they only have 1 previous transaction (stddev is 0)
+            // FIX: Increased fallback standard deviation buffer to lower sensitivity
             if (stddev == null || stddev == 0.0) {
-                stddev = 500.0; 
+                stddev = 1500.0; 
             }
 
-            // Calculate Z-Score: z = (x - μ) / σ
             double zScore = (tx.getAmount() - mean) / stddev;
 
-            // Statistically, 99.7% of normal data falls within 3 standard deviations.
-            if (zScore > 3.0) {
+            // FIX: Raised threshold from 3.0 to 4.5 standard deviations
+            // Only capture extreme anomalies, passing normal variance as SAFE
+            if (zScore > 4.5) {
                 return "HIGH_RISK_STATISTICAL_ANOMALY";
             }
         } else {
-            // Fallback for brand new users with no history
-            if (tx.getAmount() > 80000) {
+            // 3. NEW USER FALLBACK SECURITY
+            // FIX: Increased threshold limit from 80k to 150k for users without profile history
+            if (tx.getAmount() > 150000) {
                 return "HIGH_RISK_NEW_USER_LARGE_AMOUNT";
             }
         }
