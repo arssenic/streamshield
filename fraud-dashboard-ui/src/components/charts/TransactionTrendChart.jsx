@@ -13,7 +13,7 @@ export const TransactionTrendChart = ({ transactions }) => {
             <h3 className="text-lg font-semibold text-white mb-4">Live Transaction Volume</h3>
             <div className="flex-1 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <AreaChart data={chartData} margin={{ top: 10, right: 22, left: 0, bottom: 0 }}>
                         <defs>
                             <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
@@ -26,6 +26,7 @@ export const TransactionTrendChart = ({ transactions }) => {
                             stroke="#64748b" 
                             fontSize={12} 
                             tickMargin={10}
+                            interval={0}
                         />
                         <YAxis 
                             stroke="#64748b" 
