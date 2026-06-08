@@ -39,6 +39,7 @@ cd StreamShield
 
 2. Start the entire infrastructure (Kafka, Postgres, Spring Boot services, and React UI):
 docker-compose up --build -d
+```bash
 
 3. Access the platforms:
 
