@@ -38,10 +38,8 @@ export const FraudMap = ({ cityData }) => {
 
                     const intensityRatio = city.value / maxFrauds;
                     
-                    // UPDATED: Decreased point size. Now scales from 4px to 12px.
                     const radius = 4 + (intensityRatio * 8); 
                     
-                    // Slightly boosted base opacity so the smaller dots remain highly visible
                     const opacity = 0.5 + (intensityRatio * 0.5); 
                     
                     const color = city.value === maxFrauds ? '#ef4444' : '#f59e0b';

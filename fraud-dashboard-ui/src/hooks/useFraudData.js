@@ -33,7 +33,7 @@ export const useFraudData = (pollingInterval = 3000) => {
                 const topUsersArray = Object.entries(userFraudCounts)
                     .map(([userId, count]) => ({ userId, count }))
                     .sort((a, b) => b.count - a.count)
-                    .slice(0, 5); 
+                    .slice(0, 8); 
 
                 const cityFraudCounts = highRisk.reduce((acc, tx) => {
                     if (!tx.city) return acc; 
