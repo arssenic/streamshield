@@ -4,6 +4,7 @@ import { StatCard } from '../components/dashboard/StatCard';
 import { RecentTxTable } from '../components/dashboard/RecentTxTable';
 import { TopUsersList } from '../components/dashboard/TopUsersList';
 import { LiveStreamLog } from '../components/dashboard/LiveStreamLog';
+import { UserModal } from '../components/dashboard/UserModal';
 import { FraudPieChart } from '../components/charts/FraudPieChart';
 import { TransactionTrendChart } from '../components/charts/TransactionTrendChart';
 import { DemographicsChart } from '../components/charts/DemographicsChart';
@@ -14,6 +15,8 @@ export const DashboardPage = () => {
     const { data, loading, error } = useFraudData(3000);
     
     const [activeTab, setActiveTab] = useState('dashboard');
+    
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     const safeCount = data.totalCount - data.highRiskCount;
     const fraudRate = data.totalCount > 0 
@@ -26,7 +29,7 @@ export const DashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard title="Total Transactions" value={data.totalCount.toLocaleString()} icon={CreditCard} color="primary" />
                 <StatCard title="Safe Transactions" value={safeCount.toLocaleString()} icon={Activity} color="success" />
-                <StatCard title="High Risk Detected" value={data.highRiskCount.toLocaleString()} icon={ShieldAlert} color="danger" />
+                <StatCard title="Risk Detected" value={data.highRiskCount.toLocaleString()} icon={ShieldAlert} color="danger" />
                 <StatCard title="Fraud Rate" value={`${fraudRate}%`} icon={Users} color={fraudRate > 5 ? "warning" : "primary"} />
             </div>
 
@@ -40,7 +43,7 @@ export const DashboardPage = () => {
                 </div>
             </div>
 
-            {/* Row 1.5: Demographics Grid (City + Age) */}
+            {/* Row 1.5: Demographics Grid (Map + Age) */}
             <div className="mt-6">
                 <DemographicsChart cityData={data.cityStats} ageData={data.ageStats} />
             </div>
@@ -48,7 +51,8 @@ export const DashboardPage = () => {
             {/* Row 2: Top Users & Table */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                 <div className="lg:col-span-1">
-                    <TopUsersList users={data.topUsers} />
+                    {/* Pass the state setter so clicking a user opens the modal */}
+                    <TopUsersList users={data.topUsers} onUserClick={setSelectedUserId} />
                 </div>
                 <div className="lg:col-span-2">
                     <RecentTxTable transactions={data.recentTransactions} />
@@ -73,6 +77,7 @@ export const DashboardPage = () => {
                     <p>Connecting to Fraud Engine...</p>
                 </div>
             ) : (
+                // Conditionally render based on the active tab
                 activeTab === 'dashboard' ? (
                     renderDashboardContent()
                 ) : (
@@ -82,6 +87,14 @@ export const DashboardPage = () => {
                     </div>
                 )
             )}
+
+            {/* Interactive Modal Overlay (Renders on top when a user is selected) */}
+            <UserModal 
+                userId={selectedUserId} 
+                isOpen={!!selectedUserId} 
+                onClose={() => setSelectedUserId(null)} 
+                allTransactions={data.allTransactions} 
+            />
         </MainLayout>
     );
 };

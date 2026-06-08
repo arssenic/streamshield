@@ -9,7 +9,11 @@ const cityCoordinates = {
     "Patna": [25.5941, 85.1376],
     "Gaya": [24.7914, 85.0002],
     "Hyderabad": [17.3850, 78.4867],
-    "Chennai": [13.0827, 80.2707]
+    "Chennai": [13.0827, 80.2707],
+    "Kolkata": [22.5726, 88.3639],
+    "Lucknow": [26.8467, 80.9462],
+    "Kanpur": [26.4499, 80.3319],
+    "Pune": [18.5204, 73.8567]
 };
 
 export const FraudMap = ({ cityData }) => {

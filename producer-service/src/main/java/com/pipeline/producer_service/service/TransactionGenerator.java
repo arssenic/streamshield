@@ -19,7 +19,7 @@ public class TransactionGenerator {
 
     Random random = new Random();
 
-    String[] cities = {"Delhi", "Mumbai", "Bangalore", "Patna", "Gaya", "Hyderabad", "Chennai"};
+    String[] cities = {"Delhi", "Mumbai", "Bangalore", "Patna", "Gaya", "Hyderabad", "Chennai","Kolkata", "Lucknow", "Kanpur","Pune"};
 
     @Scheduled(fixedRate = 3000)
 
@@ -33,7 +33,7 @@ public class TransactionGenerator {
 
                         UUID.randomUUID().toString(),
 
-                        "user" + random.nextInt(5),
+                        "user" + random.nextInt(50),
 
                         random.nextDouble() * 100000,
 
