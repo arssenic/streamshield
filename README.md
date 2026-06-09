@@ -22,6 +22,36 @@ The system is fully containerized and features a dark-themed, interactive React 
 4. **Persistence (PostgreSQL):** Stores all evaluated `FraudRecords` for historical baseline calculations and dashboard querying.
 5. **Visualization (React/Vite Frontend):** A containerized Nginx web server hosting a React application that polls the backend API to render real-time Recharts and Leaflet maps.
 
+## 🛠️ Tech Stack
+    Backend:
+        Java 21
+
+        Spring Boot 3.x (Web, Data JPA, Kafka)
+
+        Lombok
+
+    Frontend:
+
+        React 18 (Vite)
+
+        TailwindCSS (Styling)
+
+        Recharts (Data Visualization)
+
+        React-Leaflet (Interactive Maps)
+
+        Lucide-React (Iconography)
+
+    Infrastructure:
+
+        Docker & Docker Compose (Multi-stage builds)
+
+        Nginx (Frontend serving)
+
+        Apache Kafka & Zookeeper
+
+        PostgreSQL
+
 ## 🚀 Getting Started
 
 The entire platform is configured to run via a single Docker Compose network. You do not need to install Java, Node, or PostgreSQL on your local machine.
@@ -54,34 +84,3 @@ To safely stop the cluster and wipe the database volume for a clean restart:
 
 Bash
 docker-compose down -v
-
-🛠️ Tech Stack
-    Backend:
-
-        Java 21
-
-        Spring Boot 3.x (Web, Data JPA, Kafka)
-
-        Lombok
-
-    Frontend:
-
-        React 18 (Vite)
-
-        TailwindCSS (Styling)
-
-        Recharts (Data Visualization)
-
-        React-Leaflet (Interactive Maps)
-
-        Lucide-React (Iconography)
-
-    Infrastructure:
-
-        Docker & Docker Compose (Multi-stage builds)
-
-        Nginx (Frontend serving)
-
-        Apache Kafka & Zookeeper
-
-        PostgreSQL
