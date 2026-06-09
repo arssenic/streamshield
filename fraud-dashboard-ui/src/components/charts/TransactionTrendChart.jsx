@@ -24,7 +24,7 @@ export const TransactionTrendChart = ({ transactions }) => {
                         <XAxis 
                             dataKey="time" 
                             stroke="#64748b" 
-                            fontSize={12} 
+                            fontSize={10} 
                             tickMargin={10}
                             interval={0}
                         />
